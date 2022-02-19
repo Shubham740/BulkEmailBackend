@@ -18,6 +18,7 @@ var LoginService  = function(app){
                 if(!errors.isEmpty()){
                     return res.status(400).json(getErrorModel(errors.array()))
                 }
+                
                     loginServiceProvider.login(function(error,loginResponse){
                                 if(error!=null){
                                     res.send(error)
