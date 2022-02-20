@@ -1,13 +1,13 @@
 var xlsx = require('xlsx');
-var sendEmail = require('./MailService').sendEmail;
+var sendEmail = require('./SendMail').sendEmail;
 const {parentPort,workerData} = require("worker_threads");
 
 parentPort.postMessage(fetchExcelFile(workerData.file))
 
  function fetchExcelFile(fileName){
-    var workbook = xlsx.readFile(fileName);
+    var workbook = xlsx.readFile("./src/services/mail/person_list.xlsx");
 
-let sheetList = workbook.SheetNames;
+    let sheetList = workbook.SheetNames;
 
 console.log("sheet list =>>>>", sheetList)
 for(let count =0; count<sheetList.length;count++){

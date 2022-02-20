@@ -25,6 +25,10 @@ var getErrorModel = function getErrorModel(errors){
 
 }
 
+var  getMailTransporter= function getMailTransporter(){
+
+}
+
 var getErrorResponse = function getErrorResponse(error,message){
     let errorModel =getErrorModel();
     errorModel.error=error;

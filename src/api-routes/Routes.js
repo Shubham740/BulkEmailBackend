@@ -1,5 +1,6 @@
 const ROUTES ={
-    LOGIN:'/login'
+    LOGIN:'/login',
+    SEND_BULK_MAIL:'/sendBulkMail'
 }
 
 

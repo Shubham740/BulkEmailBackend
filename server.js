@@ -2,7 +2,6 @@ var bodyParser = require('body-parser');
 var cors = require('cors');
 const express = require('express');
 const app = express();
-const dbConnection = require('./database').dbConnection;
 
 
 // intialize all the dependencies.

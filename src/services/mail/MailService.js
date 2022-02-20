@@ -1,25 +1,33 @@
-const nodemailer = require("nodemailer");
-var sendEmail= async function main(sendTo,body) {
-    // let testAccount = await nodemailer.createTestAccount();
-    let transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // true for 465, false for other ports
-        auth: {
-          user: 'mailerbulk1@gmail.com', // generated ethereal user
-          pass: 'Test@123', // generated ethereal password
-        },
-      });
-       // send mail with defined transport object
-       let info = await transporter.sendMail({
-    from: 'mailerbulk1@gmail.com', // sender address
-    to: sendTo, // list of receivers
-    subject: "Bulk mailer subject" , // Subject line
-    text: body, // plain text body
-    html: body, // html body
-  });
+const { body, validationResult } = require("express-validator");
+const { ROUTES } = require("../../api-routes/Routes");
+const { STRINGS } = require("../../utils/Strings");
+const { getErrorModel } = require("../../utils/Utils");
 
-  return info.messageId;
+
+var MailServiceProvider = require('./MailServiceProvider').MailServiceProvider;
+
+
+var MailService = function (app) {
+    var mailServiceProvider = new MailServiceProvider()
+    app.post(ROUTES.SEND_BULK_MAIL,
+        body(['groupId'],STRINGS.PLEASE_SEND_THE_DATA_IN_CORRECT_FORMAT).exists(),
+        (req, res) => {
+            const errors = validationResult(req);
+                
+                if(!errors.isEmpty()){
+                    return res.status(400).json(getErrorModel(errors.array()))
+                }
+
+            mailServiceProvider.sendMail(function(err,mailResponse){
+                    if(err!=null){
+                        res.send(err)
+                    }
+                    else{
+                        res.send(mailResponse)
+                    }
+            },req.body)
+    })
+
 }
 
-exports.sendEmail= sendEmail;
+exports.MailService = MailService;
