@@ -2,6 +2,7 @@ const { body, validationResult } = require("express-validator");
 const { ROUTES } = require("../../api-routes/Routes");
 const { STRINGS } = require("../../utils/Strings");
 const { getErrorModel } = require("../../utils/Utils");
+const { auth } = require("../auth/AuthService");
 
 
 var MailServiceProvider = require('./MailServiceProvider').MailServiceProvider;
@@ -9,7 +10,7 @@ var MailServiceProvider = require('./MailServiceProvider').MailServiceProvider;
 
 var MailService = function (app) {
     var mailServiceProvider = new MailServiceProvider()
-    app.post(ROUTES.SEND_BULK_MAIL,
+    app.post(ROUTES.SEND_BULK_MAIL, auth,
         body(['groupId'],STRINGS.PLEASE_SEND_THE_DATA_IN_CORRECT_FORMAT).exists(),
         (req, res) => {
             const errors = validationResult(req);

@@ -1,13 +1,13 @@
 const { dbConnection } = require("../../../database");
 const { STRINGS } = require("../../utils/Strings");
-const { getSuccessModel, getErrorModel } = require("../../utils/Utils");
-
+const { getSuccessModel, getErrorModel,getTokenKey } = require("../../utils/Utils");
+const jwt = require('jsonwebtoken');
 
 var LoginServiceProvider = function () {
 
     this.login = function (callback, body) {
         console.log("body =>>>>", body)
-        let query = `select * from Persons where email="${body.email}" and password ="${body.password}"`
+        let query = `select * from Users where email="${body.email}" and password ="${body.password}"`
         console.log('query =>>>>',query);
 
         dbConnection.query(query, function(err,response){
@@ -15,8 +15,10 @@ var LoginServiceProvider = function () {
             
             if(response){
                 if(response.length>0){
+                    const token = jwt.sign({id:response[0].id},getTokenKey());
                     let successModel = getSuccessModel();
-                successModel.data = response;
+                        successModel.token=token;
+                successModel.data = response[0];
                 callback(null, successModel)
                 }else{
                     let errorModel = getErrorModel();

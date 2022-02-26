@@ -14,7 +14,7 @@ var LoginService  = function(app){
         body(['email','password'],STRINGS.PLEASE_SEND_THE_DATA_IN_CORRECT_FORMAT).exists(),
         (req,res)=>{
                 const errors = validationResult(req);
-                
+
                 if(!errors.isEmpty()){
                     return res.status(400).json(getErrorModel(errors.array()))
                 }
