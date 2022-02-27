@@ -9,4 +9,5 @@ const STRINGS = {
     PLEASE_SEND_TOKEN:'Please send token'
 }
 
+
 exports.STRINGS = STRINGS;
